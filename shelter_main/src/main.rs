@@ -2,7 +2,7 @@ use clap::{Arg, Command};
 use anyhow;
 use dotenv::dotenv;
 
-use shelter_main::commands;
+use shelter_main::{commands, settings};
 
 pub fn main() -> anyhow::Result<()> {
     dotenv().ok();
@@ -20,7 +20,33 @@ pub fn main() -> anyhow::Result<()> {
         );
 
     let command = commands::configure(command);
-    let _matches = command.get_matches();
-    commands::handle(&_matches)?;
+    let matches = command.get_matches();
+    let config_location = matches
+        .get_one::<String>("config")
+        .map(|s| s.as_str())
+        .unwrap_or("");
+
+
+    let st = settings::Settings::new(config_location, "SHELTER")?;
+
+
+    // 下面是消耗的
+    // println!(
+    //     "db url: {}",
+    //     st
+    //         .database
+    //         .url
+    //         .unwrap_or("missing database url".to_string())
+    // );
+    //
+    //
+    // println!(
+    //     "log level: {}",
+    //     st.logging.log_level.unwrap_or("info".to_string())
+    // );
+
+    commands::handle(&matches, &st)?;
+
+
     Ok(())
 }

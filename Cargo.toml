@@ -3,3 +3,5 @@
 members = [
   "shelter_main"
 ]
+
+resolver = "2"
