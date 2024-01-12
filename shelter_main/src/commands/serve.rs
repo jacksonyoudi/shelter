@@ -4,6 +4,8 @@ use crate::settings::Settings;
 use tokio;
 use axum_server;
 
+use tower_http::trace::TraceLayer;
+
 pub fn configure() -> Command {
     Command::new("serve").about("Start HTTP server").arg(
         Arg::new("port")
@@ -35,7 +37,8 @@ fn start_tokio(port: u16, _settings: &Settings) -> anyhow::Result<()> {
         .block_on(
             async move {
                 let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), port);
-                let routes = crate::api::configure();
+                let routes = crate::api::configure()
+                    .layer(TraceLayer::new_for_http());
 
                 axum_server::Server::bind(addr)
                     .serve(routes.into_make_service())

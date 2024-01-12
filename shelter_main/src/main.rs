@@ -1,6 +1,9 @@
 use clap::{Arg, Command};
 use anyhow;
 use dotenv::dotenv;
+use tracing::level_filters::LevelFilter;
+use tracing::Level;
+use tracing_subscriber::{layer::SubscriberExt, Registry};
 
 use shelter_main::{commands, settings};
 
@@ -28,6 +31,14 @@ pub fn main() -> anyhow::Result<()> {
 
 
     let st = settings::Settings::new(config_location, "SHELTER")?;
+
+    let subscriber = Registry::default()
+        .with(LevelFilter::from_level(Level::DEBUG))
+        .with(tracing_subscriber::fmt::Layer::default().with_writer(std::io::stdout));
+
+    tracing::subscriber::set_global_default(subscriber).expect("Failed to set subscriber");
+
+
 
 
     // 下面是消耗的
