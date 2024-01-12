@@ -5,6 +5,8 @@ use crate::settings::Settings;
 mod hello;
 mod serve;
 
+mod migrate;
+
 pub fn configure(command: Command) -> Command {
     command
         .subcommand(hello::configure())

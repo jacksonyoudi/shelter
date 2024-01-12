@@ -1,10 +1,12 @@
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
+use std::sync::Arc;
 use clap::{value_parser, Arg, ArgMatches, Command};
 use crate::settings::Settings;
 use tokio;
 use axum_server;
 
 use tower_http::trace::TraceLayer;
+use crate::state::ApplicationState;
 
 pub fn configure() -> Command {
     Command::new("serve").about("Start HTTP server").arg(
@@ -36,8 +38,11 @@ fn start_tokio(port: u16, _settings: &Settings) -> anyhow::Result<()> {
         .unwrap()
         .block_on(
             async move {
+                let state = Arc::new(ApplicationState::new(_settings)?);
+
+
                 let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), port);
-                let routes = crate::api::configure()
+                let routes = crate::api::configure(state)
                     .layer(TraceLayer::new_for_http());
 
                 axum_server::Server::bind(addr)
