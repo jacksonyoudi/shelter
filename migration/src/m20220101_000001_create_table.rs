@@ -30,7 +30,7 @@ impl MigrationTrait for Migration {
                     .table(Dog::Table)
                     .if_not_exists()
                     .col(
-                        ColumnDef::new(Dog::Id)
+                        ColumnDef::new(User::Id)
                             .integer()
                             .not_null()
                             .auto_increment()
@@ -54,8 +54,9 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(Dog::Table).to_owned())
+            .drop_table(Table::drop().table(User::Table).to_owned())
             .await?;
+
 
         manager
             .drop_table(Table::drop().table(User::Table).to_owned())
@@ -70,6 +71,7 @@ enum User {
     Username,
     Password,
 }
+
 
 #[derive(Iden)]
 enum Dog {

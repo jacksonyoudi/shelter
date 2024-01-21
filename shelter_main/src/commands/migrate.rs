@@ -1,6 +1,7 @@
 use crate::settings::Settings;
 use clap::{ArgMatches, Command};
 use sea_orm::Database;
+
 use migration::{Migrator, MigratorTrait};
 
 pub fn configure() -> Command {
@@ -19,6 +20,7 @@ pub fn handle(matches: &ArgMatches, settings: &Settings) -> anyhow::Result<()> {
                 let conn = Database::connect(db_url)
                     .await
                     .expect("Database connection failed");
+
                 Migrator::up(&conn, None).await.unwrap();
             });
     }
