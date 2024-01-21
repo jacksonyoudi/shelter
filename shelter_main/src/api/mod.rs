@@ -4,6 +4,8 @@ use crate::state::ApplicationState;
 
 mod v1;
 pub mod handlers;
+mod request;
+mod response;
 
 
 pub fn configure(state: Arc<ApplicationState>)-> Router {

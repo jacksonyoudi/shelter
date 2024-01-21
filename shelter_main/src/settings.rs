@@ -27,12 +27,14 @@ pub struct Logging {
 pub struct Settings {
     #[serde(default)]
     pub config: ConfigInfo,
-
     #[serde(default)]
     pub database: Database,
-
     #[serde(default)]
     pub logging: Logging,
+    #[serde(default)]
+    pub token_secret: String,
+    #[serde(default)]
+    pub token_timeout_seconds: i64,
 }
 
 // let log_level = settings.logging.log_level.unwrap_or("info");
