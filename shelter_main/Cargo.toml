@@ -22,3 +22,6 @@ tracing-subscriber = "0.3.18"
 arc-swap = { version = "1.6.0", features = [] }
 sea-orm = { version = "0.12.11", features = [ "sqlx-postgres", "runtime-tokio-rustls", "macros" ] }
 migration = { path = "../migration" }
+entity = { path = "../entity" }
+password-hash = "0.5.0"
+argon2 = "0.5.3"

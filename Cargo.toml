@@ -2,7 +2,8 @@
 
 members = [
   "shelter_main",
-  "migration"
+  "migration",
+  "entity"
 ]
 
 resolver = "2"
